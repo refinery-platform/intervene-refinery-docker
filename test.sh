@@ -30,11 +30,8 @@ start docker_run
 ./docker_run.sh
 retry
 echo "docker is responsive"
-EXPECTED_FILE='fixtures/hello.html'
 ACTUAL_TEXT=`curl http://localhost:8888/`
-diff $EXPECTED_FILE <(echo "$ACTUAL_TEXT") \
-|| die "Did not find expected $EXPECTED_FILE; Perhaps update to:
-$ACTUAL_TEXT"
+grep 'Hello World!' <(echo "$ACTUAL_TEXT") || die 'No match'
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 echo "container cleaned up"
