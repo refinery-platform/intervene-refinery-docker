@@ -27,15 +27,12 @@ RUN apt-get update && \
 	cp -R /usr/local/lib/R/site-library/shiny/examples/* /srv/shiny-server/ && \
 	rm -rf /var/lib/apt/lists/*
 
-# django_docker_engine can not proxy websockets.
-# http://rstudio.github.io/shiny-server/os/latest/#disabling-websockets-on-the-server
-RUN echo 'disable_protocols websocket;' >> /etc/shiny-server/shiny-server.conf
-
 # Requirements from https://github.com/asntech/intervene-shiny/blob/version-1.0/README.md
 RUN R -e 'install.packages(c("shiny","shinydashboard", "devtools", "d3heatmap", "plotly", "gplots", "ggplot2", "gridExtra", "plyr", "UpSetR", "colourpicker", "corrplot", "BBmisc", "readr", "DT"));'
 RUN R -e 'source("https://bioconductor.org/biocLite.R"); biocLite(c("RBGL","graph"));'
 RUN R -e 'library(devtools); install_github("js229/Vennerable");'
 
 COPY . .
+RUN mv shiny-server.conf /etc/shiny-server/
 
 CMD ["R", "-e", "shiny::runApp('.', 80, host='0.0.0.0')"]
