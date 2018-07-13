@@ -31,7 +31,7 @@ start docker_run
 retry
 echo "docker is responsive"
 ACTUAL_TEXT=`curl http://localhost:8888/`
-grep 'Hello World!' <(echo "$ACTUAL_TEXT") || die 'No match'
+grep 'Intervene - an interactive Shiny app for UpSet plots' <(echo "$ACTUAL_TEXT") || die 'No match'
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 echo "container cleaned up"
