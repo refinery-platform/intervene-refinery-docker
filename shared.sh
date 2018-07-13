@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 OWNER=mccalluc # TODO: gehlenborglab
-export IMAGE=shiny_demo
+export IMAGE=intervene
 export REPO=$OWNER/$IMAGE
 export CONTAINER_NAME=$IMAGE-container
 
