@@ -724,7 +724,7 @@ shinyServer(function(input, output, session) {
     input_type <- input$pairwise_input_type
     if (is.null(inFile)){
       
-      myMatrix <- as.matrix(read.table("data/frac_pairwise_matrix.txt"))
+      myMatrix <- as.matrix(read.table("data/frac_pairwise_matrix_Khan_et_al_2016.txt"))
       if(isCor != 'non'){
         myMatrix <- cor(myMatrix, method=isCor)
       }
