@@ -752,15 +752,7 @@ shinyServer(function(input, output, session) {
   })
   
   max_limit <- reactive({
-    isCor <- input$corp_cor
-    input_type <- input$pairwise_input_type
-    
-    if(isCor == 'non' && input_type == 'list'){
-      return(as.integer(max(pairwiseMatrix())))
-    }else
-    {
-      return(1)
-    }
+    return(1)
   })
 
   output$pairwiseTable = DT::renderDataTable(
