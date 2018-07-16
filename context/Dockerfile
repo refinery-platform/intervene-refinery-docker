@@ -33,6 +33,7 @@ RUN R -e 'source("https://bioconductor.org/biocLite.R"); biocLite(c("RBGL","grap
 RUN R -e 'library(devtools); install_github("js229/Vennerable");'
 
 COPY . .
+RUN mv shiny-server.sh /usr/bin/
 RUN mv shiny-server.conf /etc/shiny-server/
 
-CMD ["R", "-e", "shiny::runApp('.', 80, host='0.0.0.0')"]
+CMD ["/usr/bin/shiny-server.sh"]
