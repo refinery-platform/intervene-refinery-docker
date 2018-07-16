@@ -41,18 +41,17 @@ bodyHome <- tabItem(tabName = "main", value="main_panel",
                 title = "Venn module", width = 4, status = "warning",
                 p("Intervene's venn module provides up-to 6-way classical, Chow-Ruskey and Edwards’ Euler/Venn diagrams to visualize the intersections of genomic regions or lists."),
                 #p("Using battle option one can generate up-to 9 sets."),
-                img(src='venn_module.png', align = "center", width="100%")
-                
-                ),
+                HTML('<a href="#shiny-tab-venn" data-toggle="tab" data-value="venn"><img src="venn_module.png" align="center" width="100%"></a>')
+              ),
               box(
                 title = "UpSet module", width = 4,status = "warning",
                 p("Intervene’s UpSet modules can be used to visualize the intersection of multiple genomic region sets using UpSet plots."),
-                img(src='upset_module.png', align = "center", width="100%")
+                HTML('<a href="#shiny-tab-upset" data-toggle="tab" data-value="upset"><img src="upset_module.png" align="center" width="100%"></a>')
               ),
               box(
                 title = "Pairwise module", width = 4,status = "warning",
                 p("Intervene’s pairwise module provides several styles of heatmaps and clustering approaches to customize the heatmaps."),
-                img(src='pairwise_module.png', align = "center", width="100%")
+                HTML('<a href="#shiny-tab-pairwise" data-toggle="tab" data-value="pairwise"><img src="pairwise_module.png" align="center" width="100%"></a>')
               )
             ),
             fluidRow(
