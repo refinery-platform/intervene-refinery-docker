@@ -1,0 +1,9 @@
+{
+  "file_relationships": [
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.4/fixtures/food/fruit.txt",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.4/fixtures/food/green.txt",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.4/fixtures/food/red.txt",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.4/fixtures/food/sweet.txt",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.4/fixtures/food/vegetable.txt"
+  ]
+}
