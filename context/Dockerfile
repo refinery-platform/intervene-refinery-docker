@@ -32,8 +32,9 @@ RUN R -e 'install.packages(c("shiny","shinydashboard", "devtools", "d3heatmap", 
 RUN R -e 'source("https://bioconductor.org/biocLite.R"); biocLite(c("RBGL","graph"));'
 RUN R -e 'library(devtools); install_github("js229/Vennerable");'
 
-COPY . .
-RUN mv shiny-server.sh /usr/bin/
-RUN mv shiny-server.conf /etc/shiny-server/
+#RUN cd /srv/shiny-server
+COPY . /srv/shiny-server/sample-apps/hello/
+COPY shiny-server.sh /usr/bin/shiny-server.sh
+COPY shiny-server.conf /etc/shiny-server/shiny-server.conf
 
 CMD ["/usr/bin/shiny-server.sh"]
