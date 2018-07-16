@@ -291,13 +291,7 @@ shinyServer(function(input, output, session) {
   })
   
   My_data <- reactive({
-    string <- input$upset_comb
-    if(string != ""){
-      My_data <- venneulerData()
-    }
-    else {
-      My_data <- My_dat()
-      }
+    My_data <- My_dat()
     return(My_data)
   })
   

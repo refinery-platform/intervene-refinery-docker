@@ -197,48 +197,7 @@ bodyUpSet <- tabItem(tabName = "upset", value="upset_plot",
                         status = "warning", width = 4,
                         tabBox(
                           # The id lets us use input$tabset1 on the server to find the current tab
-                           id = "upset_plot", height = "100%", width = "100%",
-                          
-                          tabPanel("Upload",
-                                   radioButtons('upset_input_type',
-                                                label ='Input type ',
-                                                choices = c(
-                                                  "List of Genes/SNPs" = 'list',
-                                                  "Binary data (0 & 1)" = 'binary'
-                                                ),
-                                                selected = 'list'
-                                   ),
-                                   fileInput(
-                                     'file1',
-                                     label = "Upload file",
-                                     accept = c(
-                                       'text/csv',
-                                       'text/comma-separated-values',
-                                       'text/tab-separated-values',
-                                       '.csv',
-                                       '.tsv'
-                                     )
-                                   ),
-                                   checkboxInput('header', label = 'Header', TRUE),
-                                   radioButtons('sep',
-                                     label ='Separator',
-                                     choices = c(
-                                       Comma = ',',
-                                       Semicolon = ';',
-                                       Tab = '\t'
-                                     ),
-                                     selected = ','
-                                   ),
-                                  #actionButton("confirm_upset", "Plot UpSet"),
-                                  textAreaInput('upset_comb', label = "OR enter set combinations/expression", rows = 4, placeholder = "Enter combinations of sets to plot"),
-                                  p("For example: A=3, B=3, C=2, A&B=1, A&C=2, B&C=1 ,A&B&C=1"),
-                                  #actionLink("confirm_upset_demo", "Or load demo data")
-                                  
-                                  HTML("<hr> <a href='Whyte_et_al_2013_SEs_genes.csv'> <i class='fa fa-download'> </i> List example data</a> | "), 
-                                  HTML("<a href='mutations_glioblastoma_TCGA.csv'> <i class='fa fa-download'> </i> Binary example data</a>")
-                                  
-                                   ),
-                          
+                          id = "upset_plot", height = "100%", width = "100%",
                           tabPanel("Settings",
                                    #add content
                                      htmlOutput("sets"),
@@ -398,31 +357,6 @@ bodyUpSet <- tabItem(tabName = "upset", value="upset_plot",
                                      
                                      downloadButton(outputId = "UpSetDown", label = "Download Plot")
                                    )
-                                   ),
-                          tabPanel("Usage Instructions", 
-                                   
-                                   h4("Instructions for UpSet plot module"),
-                                   p("To use this module you can upload a correctly formatted .csv or text file, encoded in binary."),
-                                   p("Before uploading the file, choose the correct separator, wheather the names in each column are 
-                                     seperated by a ' , ' choose comma, by a ' ; ' choose semicolon, or by tabs choose tab. Header names (first row) will be used as set names."),
-                                   p("UpSet module takes three types of inputs."),
-                                   
-                                   h4("List type data:"),
-                                   p("List data is a correctly formatted csv/text file, with lists of names.
-                                   Each column represents a set, and each row represents an element (names/gene/SNPs). Header names (first row) will be used as set names."),
-                                   tags$a(href = "Whyte_et_al_2013_SEs_genes.csv", "Download list of genes data from Whyte et al. 2013 "),
-                                   
-                                   
-                                   h4("Binary type data:"),
-                                   p("In the binary input file each column represents a set, and each row represents an element. 
-                                      If a names is in the set then it is represented as a 1, else it is represented as a 0."),
-                                   HTML("Here is a sample <a href='mutations_glioblastoma_TCGA.csv'> mutations data set</a> from TCGA, which represents mutations for the 100 most mutated genes in a glioblastoma multiforme cohort. This file was downloaded from <a href='https://github.com/hms-dbmi/UpSetR/tree/master/inst/extdata' target='_blank'> here</a>"),
-                                 
-                                   h4("Combination/expression type data:"),
-                                   p("Combination/expression type data is the possible combinations of set intersections. User can copy/past the combinations of intersection from the Intervene commnad line interface. For example;"),
-                                   p("H3K4me2&H3K4me3=16321,H3K4me2&H3K4me3&H3K27me3=5756,H3K27me3=25174,H3K4me3&H3K27me3=15539,H3K4me3=32964,H3K4me2&H3K27me3=19039,H3K4me2=60299,H3K27ac&H3K4me2&H3K4me3&H3K27me3=7235,H3K27ac&H3K4me2&H3K4me3=17505,H3K27ac&H3K4me2=21347,H3K27ac&H3K4me2&H3K27me3=1698,H3K27ac&H3K4me3=8134,H3K27ac&H3K4me3&H3K27me3=295,H3K27ac&H3K27me3=7605,H3K27ac=42164"),
-                                   HTML("<p>Intervene uses the <a href='https://cran.r-project.org/package=UpSetR' target='_blank'> UpSetR</a> R package for visualization.</p>")
-                                   
                           )
                         )
                       )
