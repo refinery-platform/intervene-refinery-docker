@@ -43,6 +43,10 @@ class Sets():
                 )
         return df
 
+    def print_ratio_matrix(self, path):
+        with open(path, 'w') as f:
+            f.write(self.as_ratio_matrix().to_csv(sep='\t'))
+
     def as_columns(self):
         '''
         >>> s = Sets({'a': {1, 2}, 'b': {2, 3}, 'c': {1}})
@@ -60,6 +64,10 @@ class Sets():
             base[0:len(values)] = values
             df[k] = base
         return df
+
+    def print_columns(self, path):
+        with open(path, 'w') as f:
+            f.write(self.as_columns().to_string(index=False))
 
     def _len_intersection(self, combo):
         '''
@@ -87,3 +95,7 @@ class Sets():
         return pandas.DataFrame.from_dict(
             {'&'.join(c): [self._len_intersection(c)] for c in combos}
         )
+
+    def print_intersection_counts(self, path):
+        with open(path, 'w') as f:
+            f.write(self.as_intersection_counts().to_string(index=False))

@@ -2,6 +2,9 @@ import requests
 import os
 import json
 import argparse
+import pathlib
+
+from sets import Sets
 
 
 def get_input_json(possible_input_file):
@@ -36,11 +39,15 @@ def arg_parser():
         description='A variety of set intersection visualizations')
 
     parser.add_argument(
-        '--json', nargs='?', type=argparse.FileType('r'),
+        '--json', type=argparse.FileType('r'),
         help='input.json')
     parser.add_argument(
         '--lists', nargs='+', type=argparse.FileType('r'),
         help='Single column lists')
+    parser.add_argument(
+        '--output', type=str,
+        help='Destination directory'
+    )
 
     return parser
 
@@ -54,4 +61,9 @@ if __name__ == '__main__':
         raise StandardError('TODO')
     elif args.lists:
         lists = read_lists(args.lists)
-        print(lists)
+        sets = Sets(lists)
+        pathlib.Path(args.output).mkdir(parents=True, exist_ok=True)
+        sets.print_columns(os.path.join(args.output, 'columns.txt'))
+        sets.print_ratio_matrix(os.path.join(args.output, 'ratio_matrix.txt'))
+        sets.print_intersection_counts(os.path.join(args.output, 'intersection_counts.txt'))
+
