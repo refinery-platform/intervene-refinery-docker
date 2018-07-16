@@ -70,45 +70,10 @@ bodyVenn <- tabItem(tabName = "venn",
           h2("Venn diagrams"),
           
           fluidRow(
-            box( title = "Data upload & settings", width = 4, status = "warning",
+            box( width = 4, status = "warning",
                  tabBox(
                    id = "venntab", height = "100%", width = "100%",
-                   
-                   tabPanel("Upload",
-                            fileInput(
-                              'file_venn',
-                              label = "Upload file",
-                              accept = c(
-                                'text/csv',
-                                'text/comma-separated-values',
-                                'text/tab-separated-values',
-                                '.csv',
-                                '.tsv'
-                              )
-                            ),
-                            checkboxInput('header_venn', label = 'Header', TRUE),
-                            radioButtons(
-                              'sep_venn',
-                              label = 'Separator',
-                              #inline = TRUE,
-                              choices = c(
-                                Comma = ',',
-                                Tab = '\t',
-                                Semicolon = ';'
-                              ),
-                              selected = ','
-                            ),
-                            br(),
-                            HTML("<hr> <a href='Whyte_et_al_2013_SEs_genes.csv'> <i class='fa fa-download'> </i> List example data</a>")
-                            
-                            #textAreaInput('venn_comb', label = "OR enter Venn combinations", rows = 4, placeholder = "Enter combinations of sets to plot"),
-                            #p("For example:  A=12, B=12, C=5, A&B=4, A&C=2, B&C=1, A&B&C=2"),
-                            #tags$button(id="confirm_venn", 
-                            #            type="button", 
-                            #            class="btn action-button btn-large btn-primary", 
-                            #            HTML('<i class="icon-star"></i> Plot Venn Diagram'))
-                   ),
-                  tabPanel("Settings",
+                   tabPanel("Settings",
                                    #add content
                                    htmlOutput("venn_sets"),
                                    selectInput(
@@ -217,17 +182,6 @@ bodyVenn <- tabItem(tabName = "venn",
                            
                            downloadButton(outputId = "VennDown", label = "Download Plot")
                          )
-                ),
-                tabPanel("Usage Instructions", 
-                         
-                         h4("Instructions for Venn diagram module"),
-                         p("To use this venn module, you can upload a correctly formatted csv/text file, with lists of names.
-                            Each column represents a set, and each row represents an element (names/gene/SNPs)."),
-                         p("Before uploading the file, choose the correct separator, wheather the names in each column are 
-                                     seperated by a ' , ' choose comma, by a ' ; ' choose semicolon, or by tabs choose tab."),
-                         p("Header names (first row) will be used as set names."),
-                         tags$a(href = "Whyte_et_al_2013_SEs_genes.csv", "Download demo data from Whyte et al. 2013 "),
-                         HTML("<p>Intervene uses the <a href='https://github.com/js229/Vennerable' target='_blank'> Vennerable</a> to generate different Venn diagrams.</p>")
                 )
               )
             )
