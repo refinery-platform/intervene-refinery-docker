@@ -276,20 +276,6 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  venneulerData <- reactive({
-    string <- input$upset_comb
-    string <- gsub("\n", "", string)
-    if(string != ""){
-      string <- as.list(unlist(strsplit(string, ",")))
-      names <- lapply(string, function(x){x <- unlist(strsplit(x, "=")); x <- x[1]})
-      names <- unlist(lapply(names, function(x){x <- gsub(" ", "", x)}))
-      values <- as.numeric(unlist(lapply(string, function(x){x <- unlist(strsplit(x,"=")); x <- x[2]})))
-      names(values) <- names
-      venneuler <- fromExpression(values)
-      return(venneuler)
-    }
-  })
-  
   My_data <- reactive({
     My_data <- My_dat()
     return(My_data)

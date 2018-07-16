@@ -1,4 +1,5 @@
 import pandas
+import itertools
 
 
 class Sets():
@@ -60,5 +61,29 @@ class Sets():
             df[k] = base
         return df
 
-    def as_strings(self):
-        pass
+    def _len_intersection(self, combo):
+        '''
+        >>> s = Sets({'a': {1, 2}, 'b': {2, 3}, 'c': {1}})
+        >>> s._len_intersection(['a'])
+        2
+        >>> s._len_intersection(['a', 'b'])
+        1
+        >>> s._len_intersection(['a', 'b', 'c'])
+        0
+        '''
+        return len(set.intersection(*[self.dict_of_sets[el] for el in combo]))
+
+    def as_intersection_counts(self):
+        '''
+        >>> s = Sets({'a': {1, 2}, 'b': {2, 3}, 'c': {1}})
+        >>> s.as_intersection_counts()
+           a  b  c  a&b  a&c  b&c  a&b&c
+        0  2  2  1    1    1    0      0
+        '''
+        keys = self.dict_of_sets.keys()
+        combos = []
+        for i in range(len(self.dict_of_sets)):
+            combos += itertools.combinations(keys, i + 1)
+        return pandas.DataFrame.from_dict(
+            {'&'.join(c): [self._len_intersection(c)] for c in combos}
+        )
