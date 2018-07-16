@@ -21,6 +21,11 @@ retry() {
 source shared.sh
 
 
+start doctest
+python -m doctest context/python/sets.py -v
+end doctest
+
+
 start docker_build
 ./docker_build.sh
 end docker_build
