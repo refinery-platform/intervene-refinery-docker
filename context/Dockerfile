@@ -32,9 +32,9 @@ RUN R -e 'install.packages(c("shiny","shinydashboard", "devtools", "d3heatmap", 
 RUN R -e 'source("https://bioconductor.org/biocLite.R"); biocLite(c("RBGL","graph"));'
 RUN R -e 'library(devtools); install_github("js229/Vennerable");'
 
-#RUN cd /srv/shiny-server
-COPY . /srv/shiny-server/sample-apps/hello/
-COPY shiny-server.sh /usr/bin/shiny-server.sh
-COPY shiny-server.conf /etc/shiny-server/shiny-server.conf
+# Clobber the built-in hello-world:
+COPY shiny-app /srv/shiny-server/sample-apps/hello/
+COPY shiny-server/shiny-server.sh /usr/bin/shiny-server.sh
+COPY shiny-server/shiny-server.conf /etc/shiny-server/shiny-server.conf
 
 CMD ["/usr/bin/shiny-server.sh"]
