@@ -1,6 +1,7 @@
 #!/bin/sh
+set -e
 
-python3 /tmp/python/parse.py --files /tmp/fixtures/*.txt --output /tmp
+python3 /usr/bin/parse.py --lists /tmp/fixtures/*.txt --output /tmp
 
 # Make sure the directory for individual app logs exists
 mkdir -p /var/log/shiny-server

@@ -16,7 +16,8 @@ RUN apt-get update && \
         pandoc-citeproc \
         libcurl4-gnutls-dev \
         libcairo2-dev \
-        libxt-dev && \
+        libxt-dev \
+        python3-setuptools && \
     S3=https://s3.amazonaws.com/rstudio-shiny-server-os-build/ubuntu-12.04/x86_64 && \
 	wget --no-verbose $S3/VERSION -O version.txt && \
 	VERSION=$(cat version.txt) && \
@@ -32,13 +33,17 @@ RUN R -e 'install.packages(c("shiny","shinydashboard", "devtools", "d3heatmap", 
 RUN R -e 'source("https://bioconductor.org/biocLite.R"); biocLite(c("RBGL","graph"));'
 RUN R -e 'library(devtools); install_github("js229/Vennerable");'
 
+RUN easy_install3 pip
+COPY python/requirements.txt .
+RUN pip3 install -r requirements.txt
+
 # Clobber the built-in hello-world:
 COPY shiny-app /srv/shiny-server/sample-apps/hello/
 COPY shiny-server/shiny-server.sh /usr/bin/shiny-server.sh
 COPY shiny-server/shiny-server.conf /etc/shiny-server/shiny-server.conf
 
-# TODO: Read input.json
+COPY python/* /usr/bin/
+# TODO: Read input.json instead
 COPY fixtures/food/*.txt /tmp/fixtures/
-COPY python/* /tmp/python/
 
 CMD ["/usr/bin/shiny-server.sh"]
