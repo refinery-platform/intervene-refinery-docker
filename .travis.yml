@@ -1,6 +1,10 @@
-language: bash
+language: python
+python:
+- 3.6.0
 services:
 - docker
+install:
+- pip install -r context/python/requirements.txt
 script:
 - "./test.sh"
 after_success:

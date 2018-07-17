@@ -100,7 +100,7 @@ shinyServer(function(input, output, session) {
        }
        else{
       #data <- read.csv('data/Whyte_et_al_2013_SEs_genes.csv', header = TRUE, sep = ',')
-      data <- read_delim('data/Whyte_et_al_2013_SEs_genes.csv', ",", escape_double = FALSE, trim_ws = TRUE, col_names = TRUE)
+      data <- read_delim('data/columns.txt', ",", escape_double = FALSE, trim_ws = TRUE, col_names = TRUE)
       return(lapply(data, function(x) x[!is.na(x)]))
       }
     }
@@ -252,52 +252,12 @@ shinyServer(function(input, output, session) {
   })
   
   My_dat <- reactive({  
-    inFile <- input$file1
-    input_type = input$upset_input_type
-    if (is.null(inFile) == T){
-      
-      My_dat<- fromExpression(c('H3K4me2&H3K4me3'=16321,'H3K4me2&H3K4me3&H3K27me3'=5756,'H3K27me3'=25174,'H3K4me3&H3K27me3'=15539,'H3K4me3'=32964,'H3K4me2&H3K27me3'=19039,'H3K4me2'=60299,'H3K27ac&H3K4me2&H3K4me3&H3K27me3'=7235,'H3K27ac&H3K4me2&H3K4me3'=17505,'H3K27ac&H3K4me2'=21347,'H3K27ac&H3K4me2&H3K27me3'=1698,'H3K27ac&H3K4me3'=8134,'H3K27ac&H3K4me3&H3K27me3'=295,'H3K27ac&H3K27me3'=7605,'H3K27ac'=42164))
-      #read.csv("data/ENCODE_hESC_HMs.txt", header = TRUE, sep = '\t')
-      return(My_dat)
-    }
-    else if(is.null(inFile) == F && input_type == 'binary'){
-      read.csv(inFile$datapath, header = input$header,
-               sep = input$sep, quote = input$quote)
-      }else if (is.null(inFile) == F && input_type == 'list'){
-        #My_dat <- fromList(convertColsToList(read.csv(inFile$datapath, header = input$header, sep = input$sep, quote = input$quote)))
-        #removed NAs
-        #My_dat <- fromList(lapply(as.list(read.csv(inFile$datapath, header = input$header, sep = input$sep, quote = input$quote)), function(x) x[!is.na(x)]))
-        My_dat <- read_delim(inFile$datapath, input$sep , escape_double = FALSE, trim_ws = TRUE, col_names = input$header)
-        My_dat <- fromList(lapply(as.list(My_dat), function(x) x[!is.na(x)]))
-      
-        return(My_dat)
-    }else{
-      return(NULL)
-    }
-  })
-  
-  venneulerData <- reactive({
-    string <- input$upset_comb
-    string <- gsub("\n", "", string)
-    if(string != ""){
-      string <- as.list(unlist(strsplit(string, ",")))
-      names <- lapply(string, function(x){x <- unlist(strsplit(x, "=")); x <- x[1]})
-      names <- unlist(lapply(names, function(x){x <- gsub(" ", "", x)}))
-      values <- as.numeric(unlist(lapply(string, function(x){x <- unlist(strsplit(x,"=")); x <- x[2]})))
-      names(values) <- names
-      venneuler <- fromExpression(values)
-      return(venneuler)
-    }
+    My_dat <- read_delim('data/columns.txt', ",", escape_double = FALSE, trim_ws = TRUE, col_names = TRUE)
+    My_dat <- fromList(lapply(as.list(My_dat), function(x) x[!is.na(x)]))
   })
   
   My_data <- reactive({
-    string <- input$upset_comb
-    if(string != ""){
-      My_data <- venneulerData()
-    }
-    else {
-      My_data <- My_dat()
-      }
+    My_data <- My_dat()
     return(My_data)
   })
   
@@ -724,7 +684,7 @@ shinyServer(function(input, output, session) {
     input_type <- input$pairwise_input_type
     if (is.null(inFile)){
       
-      myMatrix <- as.matrix(read.table("data/frac_pairwise_matrix_Khan_et_al_2016.txt"))
+      myMatrix <- as.matrix(read.table("data/ratio_matrix.txt"))
       if(isCor != 'non'){
         myMatrix <- cor(myMatrix, method=isCor)
       }
@@ -758,15 +718,7 @@ shinyServer(function(input, output, session) {
   })
   
   max_limit <- reactive({
-    isCor <- input$corp_cor
-    input_type <- input$pairwise_input_type
-    
-    if(isCor == 'non' && input_type == 'list'){
-      return(as.integer(max(pairwiseMatrix())))
-    }else
-    {
-      return(1)
-    }
+    return(1)
   })
 
   output$pairwiseTable = DT::renderDataTable(
