@@ -100,7 +100,7 @@ shinyServer(function(input, output, session) {
        }
        else{
       #data <- read.csv('data/Whyte_et_al_2013_SEs_genes.csv', header = TRUE, sep = ',')
-      data <- read_delim('data/Whyte_et_al_2013_SEs_genes.csv', ",", escape_double = FALSE, trim_ws = TRUE, col_names = TRUE)
+      data <- read_delim('data/columns.txt', ",", escape_double = FALSE, trim_ws = TRUE, col_names = TRUE)
       return(lapply(data, function(x) x[!is.na(x)]))
       }
     }
@@ -704,7 +704,7 @@ shinyServer(function(input, output, session) {
     input_type <- input$pairwise_input_type
     if (is.null(inFile)){
       
-      myMatrix <- as.matrix(read.table("data/frac_pairwise_matrix_Khan_et_al_2016.txt"))
+      myMatrix <- as.matrix(read.table("data/ratio_matrix.txt"))
       if(isCor != 'non'){
         myMatrix <- cor(myMatrix, method=isCor)
       }

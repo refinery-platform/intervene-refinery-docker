@@ -37,8 +37,7 @@ RUN easy_install3 pip
 COPY python/requirements.txt .
 RUN pip3 install -r requirements.txt
 
-# Clobber the built-in hello-world:
-COPY shiny-app /srv/shiny-server/sample-apps/hello/
+COPY shiny-app /srv/shiny-server/sample-apps/intervene/
 COPY shiny-server/shiny-server.sh /usr/bin/shiny-server.sh
 COPY shiny-server/shiny-server.conf /etc/shiny-server/shiny-server.conf
 

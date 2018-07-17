@@ -67,7 +67,7 @@ class Sets():
 
     def print_columns(self, path):
         with open(path, 'w') as f:
-            f.write(self.as_columns().to_string(index=False))
+            f.write(self.as_columns().to_csv(index=False))
 
     def _len_intersection(self, combo):
         '''
