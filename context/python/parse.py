@@ -65,5 +65,4 @@ if __name__ == '__main__':
         pathlib.Path(args.output).mkdir(parents=True, exist_ok=True)
         sets.print_columns(os.path.join(args.output, 'columns.txt'))
         sets.print_ratio_matrix(os.path.join(args.output, 'ratio_matrix.txt'))
-        sets.print_intersection_counts(os.path.join(args.output, 'intersection_counts.txt'))
 
