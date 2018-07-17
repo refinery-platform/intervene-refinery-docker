@@ -32,7 +32,7 @@ def get_input_json(possible_input_file):
     and returns JSON string if found.
     Returns None if all three fail.
     '''
-    if possible_input_file and os.path.isfile(possible_input_file):
+    if os.path.isfile(possible_input_file):
         return open(possible_input_file, 'r').read(None)
 
     json = os.environ.get('INPUT_JSON')
