@@ -3,7 +3,8 @@ set -o errexit
 
 source shared.sh
 
-INPUT_JSON="$(cat context/fixtures/food/fake-input.json)"
+export INPUT_JSON="$(cat context/fixtures/food/fake-input.json)"
+echo 'INPUT_JSON:'
 echo $INPUT_JSON
 
 docker run --env INPUT_JSON \
