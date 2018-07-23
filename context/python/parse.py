@@ -37,14 +37,15 @@ def get_input_json(possible_input_file):
 
     json = os.environ.get('INPUT_JSON')
     if json:
+        print('INPUT_JSON: ' + json[:40])
         return json
 
     url = os.environ.get('INPUT_JSON_URL')
     if url:
-        print('url: ' + url)
+        print('INPUT_JSON_URL: ' + url)
         return requests.get(url).text
 
-    return None
+    raise Exception('No input.json from any source')
 
 
 def read_json(input_json_path):

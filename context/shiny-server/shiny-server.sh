@@ -1,8 +1,12 @@
 #!/bin/sh
 set -e
 
+echo 'environment:'
+env # To help with debugging: Did we get the variables we expected?
+echo
+
 python3 /usr/bin/parse.py \
-    --lists /tmp/input.json \
+    --json /tmp/input.json \
     --output /srv/shiny-server/sample-apps/intervene/data
 
 # Make sure the directory for individual app logs exists
