@@ -42,7 +42,5 @@ COPY shiny-server/shiny-server.sh /usr/bin/shiny-server.sh
 COPY shiny-server/shiny-server.conf /etc/shiny-server/shiny-server.conf
 
 COPY python/* /usr/bin/
-# TODO: Read input.json instead
-COPY fixtures/food/*.txt /tmp/fixtures/
 
 CMD ["/usr/bin/shiny-server.sh"]
