@@ -18,7 +18,8 @@ class Sets():
         c  1  0  1
         '''
         keys = self.dict_of_sets.keys()
-        df = pandas.DataFrame(index=keys, columns=keys, dtype=int)
+        df = pandas.DataFrame(
+            index=sorted(keys), columns=sorted(keys), dtype=int)
         for j in keys:
             for k in keys:
                 df[j][k] = len(self.dict_of_sets[j] & self.dict_of_sets[k])
@@ -34,7 +35,8 @@ class Sets():
         c  0.5  0.0  1.0
         '''
         keys = self.dict_of_sets.keys()
-        df = pandas.DataFrame(index=keys, columns=keys, dtype=int)
+        df = pandas.DataFrame(
+            index=sorted(keys), columns=sorted(keys), dtype=int)
         for j in keys:
             for k in keys:
                 df[j][k] = (

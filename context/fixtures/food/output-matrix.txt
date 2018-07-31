@@ -1,0 +1,5 @@
+	fruit.csv	green.tsv	sweet.txt	vegetable.txt
+fruit.csv	1.0	0.2857142857142857	0.25	0.0
+green.tsv	0.5	1.0	0.5	0.6
+sweet.txt	0.25	0.2857142857142857	1.0	0.0
+vegetable.txt	0.0	0.42857142857142855	0.0	1.0
