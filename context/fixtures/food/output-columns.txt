@@ -1,0 +1,8 @@
+fruit.csv,green.tsv,sweet.txt,vegetable.txt
+Apple,Apple,Apple,Broccoli
+Lemon,Broccoli,Kiwi,Carrot
+Lime,Cucumber,Pe,Pepper
+Strawberry,Kiwi,Str,Pickle
+,Lime,,Tomato
+,Pepper,,
+,Pickle,,

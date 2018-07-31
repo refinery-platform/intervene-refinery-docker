@@ -57,11 +57,11 @@ class Sets():
         '''
         keys = self.dict_of_sets.keys()
         max_len = max([len(self.dict_of_sets[k]) for k in keys])
-        df = pandas.DataFrame(columns=keys)
+        df = pandas.DataFrame(columns=sorted(keys))
         for k in keys:
             base = [''] * max_len
             values = [str(v) for v in self.dict_of_sets[k]]
-            base[0:len(values)] = values
+            base[0:len(values)] = sorted(values)
             df[k] = base
         return df
 

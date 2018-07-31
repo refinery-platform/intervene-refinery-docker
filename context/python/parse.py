@@ -50,7 +50,7 @@ def read_lists(lists, min_p_value=0):
 
     >>> from io import BytesIO
     >>> fake = BytesIO(b'id,a,p_value,z\\n42,1,2,3\\n43,4,5,6')
-    >>> fake.name = 'fake.txt'
+    >>> fake.name = '/ignore/directories/fake.txt'
     >>> lists = [fake]
     >>> filename_set_dict = read_lists(lists, min_p_value=4)
     >>> list(filename_set_dict.keys())
@@ -67,7 +67,8 @@ def read_lists(lists, min_p_value=0):
         else:
             # If we can't identify a p-value column, take the whole thing.
             selected_rows = df
-        filename_to_set[f.name] = set(selected_rows.index.tolist())
+        filename_to_set[os.path.basename(f.name)] = \
+            set(selected_rows.index.tolist())
     return filename_to_set
 
 

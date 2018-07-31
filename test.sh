@@ -50,9 +50,9 @@ grep 'Intervene - an interactive Shiny app for UpSet plots' <(echo "$ACTUAL_TEXT
 
 BASE='docker exec intervene-container cat /srv/shiny-server/sample-apps/intervene/data'
 ACTUAL_COLUMNS=`$BASE/columns.txt`
-diff context/fixtures/food/output-columns.txt <(echo "$ACTUAL_COLUMNS") || die "Unexpected columns"
+diff context/fixtures/food/output-columns.txt <(echo "$ACTUAL_COLUMNS") || die "Unexpected columns; Actual: $ACTUAL_COLUMNS"
 ACTUAL_MATRIX=`$BASE/ratio_matrix.txt`
-diff context/fixtures/food/output-matrix.txt <(echo "$ACTUAL_MATRIX") || die "Unexpected matrix"
+diff context/fixtures/food/output-matrix.txt <(echo "$ACTUAL_MATRIX") || die "Unexpected matrix; Actual: $ACTUAL_MATRIX"
 
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
