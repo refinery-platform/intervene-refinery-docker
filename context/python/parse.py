@@ -3,29 +3,6 @@ import requests
 import os
 import json
 import re
-import argparse
-import pathlib
-
-from sets import Sets
-
-
-def arg_parser():
-    parser = argparse.ArgumentParser(
-        description='A variety of set intersection visualizations')
-
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument(
-        '--json', type=str,
-        help='If given file does not exist, fall back to environment variable')
-    group.add_argument(
-        '--lists', nargs='+', type=argparse.FileType('r'),
-        help='Single column lists')
-
-    parser.add_argument(
-        '--output', type=str,
-        help='Destination directory')
-
-    return parser
 
 
 def get_input_json(possible_input_file):
@@ -105,19 +82,3 @@ def pick_col(name_re, df):
             name_re, df.columns.tolist(), match_cols
         )
     return match_cols[0]
-
-
-if __name__ == '__main__':
-    parser = arg_parser()
-    args = parser.parse_args()
-    if args.json:
-        lists = read_json(args.json)
-    elif args.lists:
-        lists = read_lists(args.lists)
-    else:
-        raise Exception('Either --json or --lists should be given')
-    sets = Sets(lists)
-    pathlib.Path(args.output).mkdir(parents=True, exist_ok=True)
-    sets.print_columns(os.path.join(args.output, 'columns.txt'))
-    sets.print_ratio_matrix(os.path.join(args.output, 'ratio_matrix.txt'))
-

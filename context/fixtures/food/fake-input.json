@@ -1,8 +1,8 @@
 {
   "file_relationships": [
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/4e450/context/fixtures/food/fruit.txt",
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/4e450/context/fixtures/food/green.txt",
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/4e450/context/fixtures/food/sweet.txt",
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/4e450/context/fixtures/food/vegetable.txt"
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/mccalluc/use-dataframer/context/fixtures/food/fruit.csv",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/mccalluc/use-dataframer/context/fixtures/food/green.tsv",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/mccalluc/use-dataframer/context/fixtures/food/sweet.txt",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/mccalluc/use-dataframer/context/fixtures/food/vegetable.txt"
   ]
 }
