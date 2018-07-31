@@ -1,3 +1,4 @@
+from dataframer import dataframer
 import requests
 import os
 import json
@@ -59,8 +60,11 @@ def read_json(input_json_path):
 
 
 def read_lists(lists):
-    return {os.path.basename(f.name) : {l.strip() for l in f.readlines()}
-            for f in lists}
+    filename_to_set = {}
+    for f in lists:
+        df = dataframer.parse(f).data_frame
+        filename_to_set[f.name] = df.index
+    return filename_to_set
 
 
 if __name__ == '__main__':
