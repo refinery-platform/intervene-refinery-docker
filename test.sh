@@ -25,11 +25,17 @@ start doctest
 python -m doctest context/python/*.py -v
 end doctest
 
+start format
+flake8 context || die "Run 'autopep8 --in-place -r context'"
+end format
+
+start isort
+isort --recursive context --check-only || die "Run 'isort --recursive context'"
+end isort
 
 start docker_build
 ./docker_build.sh
 end docker_build
-
 
 start docker_run
 ./docker_run.sh

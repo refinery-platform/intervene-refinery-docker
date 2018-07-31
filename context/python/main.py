@@ -3,8 +3,8 @@
 import argparse
 import os
 import pathlib
-
 from sets import Sets
+
 from parse import read_json, read_lists
 
 
@@ -25,6 +25,7 @@ def arg_parser():
         help='Destination directory')
 
     return parser
+
 
 if __name__ == '__main__':
     parser = arg_parser()

@@ -1,5 +1,4 @@
 import pandas
-import itertools
 
 
 class Sets():
@@ -10,7 +9,8 @@ class Sets():
     def as_count_matrix(self):
         '''
         >>> s = Sets({'a': {1, 2}, 'b': {2, 3}, 'c': {1}})
-        >>> with pandas.option_context('display.float_format', '{:,.0f}'.format):
+        >>> with pandas.option_context(
+        ...      'display.float_format', '{:,.0f}'.format):
         ...   s.as_count_matrix()
            a  b  c
         a  2  1  1

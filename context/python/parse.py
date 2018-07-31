@@ -1,8 +1,9 @@
-from dataframer import dataframer
-import requests
-import os
 import json
+import os
 import re
+
+import requests
+from dataframer import dataframer
 
 
 def get_input_json(possible_input_file):
@@ -66,7 +67,7 @@ def read_lists(lists, min_p_value=0):
 
 def pick_col(name_re, df):
     '''
-    Picks single column from dataframe that matches given name_re
+    Picks single column from dataframe that matches given name_re.
 
     >>> import pandas
     >>> df = pandas.DataFrame(
@@ -84,7 +85,7 @@ def pick_col(name_re, df):
     assert len(match_cols) <= 1, \
         'expected one match for /{}/i in {}, got {}'.format(
             name_re, df.columns.tolist(), match_cols
-        )
+    )
     if len(match_cols) == 1:
         return match_cols[0]
     return None
