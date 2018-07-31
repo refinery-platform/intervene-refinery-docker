@@ -1,6 +1,8 @@
 import json
 import os
 import re
+from tempfile import mkdtemp
+from urllib.parse import urlparse
 
 import requests
 from dataframer import dataframer
@@ -28,14 +30,18 @@ def get_input_json(possible_input_file):
     raise Exception('No input.json from any source')
 
 
-def read_json(input_json_path):
+def read_json(input_json_path, min_p_value=0):
     input_json = get_input_json(input_json_path)
     data = json.loads(input_json)
-    return {
-        os.path.basename(url): {
-            l.strip() for l in requests.get(url).text.split('\n')
-        } for url in data['file_relationships']
-    }
+    tmp_dir = mkdtemp()
+    downloads = []
+    for url in data['file_relationships']:
+        base = os.path.basename(urlparse(url).path)
+        full = os.path.join(tmp_dir, base)
+        with open(full, 'wb') as f:
+            f.write(requests.get(url).content)
+        downloads.append(open(full, 'rb'))
+    return read_lists(downloads, min_p_value=min_p_value)
 
 
 def read_lists(lists, min_p_value=0):

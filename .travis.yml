@@ -5,6 +5,7 @@ services:
 - docker
 install:
 - pip install -r context/python/requirements.txt
+- pip install -r requirements-dev.txt
 script:
 - "./test.sh"
 after_success:
