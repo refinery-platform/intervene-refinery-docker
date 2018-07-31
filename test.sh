@@ -22,7 +22,7 @@ source shared.sh
 
 
 start doctest
-python -m doctest context/python/sets.py -v
+python -m doctest context/python/*.py -v
 end doctest
 
 
