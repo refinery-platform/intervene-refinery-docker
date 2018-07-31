@@ -55,7 +55,11 @@ def read_lists(lists, min_p_value=0):
     for f in lists:
         df = dataframer.parse(f).data_frame
         p_value_col = pick_col(r'p.*value', df)
-        selected_rows = df.loc[df[p_value_col] > min_p_value]
+        if p_value_col:
+            selected_rows = df.loc[df[p_value_col] > min_p_value]
+        else:
+            # If we can't identify a p-value column, take the whole thing.
+            selected_rows = df
         filename_to_set[f.name] = set(selected_rows.index.tolist())
     return filename_to_set
 
@@ -77,8 +81,10 @@ def pick_col(name_re, df):
         col for col in df.columns
         if re.search(name_re, col, flags=re.IGNORECASE)
     ]
-    assert len(match_cols) == 1, \
+    assert len(match_cols) <= 1, \
         'expected one match for /{}/i in {}, got {}'.format(
             name_re, df.columns.tolist(), match_cols
         )
-    return match_cols[0]
+    if len(match_cols) == 1:
+        return match_cols[0]
+    return None
