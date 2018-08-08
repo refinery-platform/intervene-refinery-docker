@@ -57,28 +57,60 @@ def read_files(files, p_value_bound=None,
     Reads and filters files and returns a filename -> set dict.
 
     >>> from io import BytesIO
-    >>> fake = BytesIO(b'id,a,p_value,z\\n42,1,2,3\\n43,4,5,6')
-    >>> fake.name = '/ignore/directories/fake.txt'
-    >>> lists = [fake]
-    >>> filename_set_dict = read_files(lists, p_value_bound=4)
-    >>> list(filename_set_dict.keys())
+    >>> file = BytesIO('\\n'.join([ \
+                'id,p_value,fold_change', \
+                'id00,0,0', \
+                'id11,1,1', \
+                'id22,2,2', \
+                'id02,0,2', \
+                'id20,2,0']).encode('utf-8'))
+    >>> file.name = '/ignore/directories/fake.txt'
+    >>> lists = [file]
+
+    # No filters:
+    >>> selected = read_files(lists)
+    >>> list(selected.keys())
     ['fake.txt']
-    >>> list(filename_set_dict.values())
-    [{42}]
+    >>> sorted(list(selected.values())[0])
+    ['id00', 'id02', 'id11', 'id20', 'id22']
+
+    # p-value:
+    >>> selected = read_files(lists, p_value_bound=1)
+    >>> sorted(list(selected.values())[0])
+    ['id00', 'id02']
+
+    # fold-change increase:
+    >>> selected = read_files(lists, fold_change_bound=1, \
+                    fold_change_is_increase=True)
+    >>> sorted(list(selected.values())[0])
+    ['id02', 'id22']
+
+    # fold-change decrease:
+    >>> selected = read_files(lists, fold_change_bound=1, \
+                    fold_change_is_increase=False)
+    >>> sorted(list(selected.values())[0])
+    ['id00', 'id20']
+
+    # p-value and fold-change increase:
+    >>> selected = read_files(lists, p_value_bound=1, fold_change_bound=1, \
+                    fold_change_is_increase=True)
+    >>> sorted(list(selected.values())[0])
+    ['id02']
+
     '''
     filename_to_set = {}
     for f in files:
         df = dataframer.parse(f).data_frame
 
         p_value_col = pick_col(r'p.*value', df)
-        if p_value_col:
+        if p_value_col and p_value_bound is not None:
             df_p_value_filtered = df.loc[df[p_value_col] < p_value_bound]
         else:
             # If we can't identify a p-value column, take the whole thing.
             df_p_value_filtered = df
 
         fold_change_col = pick_col(r'fold.*change', df)
-        if fold_change_col:
+        if fold_change_col and fold_change_bound is not None:
             filter = (df[fold_change_col] > fold_change_bound) \
                 if fold_change_is_increase \
                 else (df[fold_change_col] < fold_change_bound)
