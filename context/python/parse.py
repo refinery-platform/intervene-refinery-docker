@@ -1,7 +1,7 @@
 import json
 import os
 import re
-from tempfile import mkdtemp
+from io import BytesIO
 from urllib.parse import urlparse
 
 import requests
@@ -30,21 +30,29 @@ def get_input_json(possible_input_file):
     raise Exception('No input.json from any source')
 
 
-def read_json(input_json_path, min_p_value=0):
+def read_json(input_json_path):
     input_json = get_input_json(input_json_path)
     data = json.loads(input_json)
-    tmp_dir = mkdtemp()
-    downloads = []
+    streams = []
     for url in data['file_relationships']:
-        base = os.path.basename(urlparse(url).path)
-        full = os.path.join(tmp_dir, base)
-        with open(full, 'wb') as f:
-            f.write(requests.get(url).content)
-        downloads.append(open(full, 'rb'))
-    return read_lists(downloads, min_p_value=min_p_value)
+        bytes = requests.get(url).content
+        stream = BytesIO(bytes)
+        stream.name = os.path.basename(urlparse(url).path)
+        streams.append(stream)
+    for parameter in data['parameters']:
+        if parameter['name'] == 'p-value bound':
+            p_value_bound = parameter['value']
+        if parameter['name'] == 'fold-change bound':
+            fold_change_bound = parameter['value']
+        if parameter['name'] == 'fold-change increase':
+            fold_change_is_increase = parameter['value']
+    return read_files(streams, p_value_bound=p_value_bound,
+                      fold_change_bound=fold_change_bound,
+                      fold_change_is_increase=fold_change_is_increase)
 
 
-def read_lists(lists, min_p_value=0):
+def read_files(files, p_value_bound=None,
+               fold_change_bound=None, fold_change_is_increase=None):
     '''
     Reads and filters files and returns a filename -> set dict.
 
@@ -52,18 +60,18 @@ def read_lists(lists, min_p_value=0):
     >>> fake = BytesIO(b'id,a,p_value,z\\n42,1,2,3\\n43,4,5,6')
     >>> fake.name = '/ignore/directories/fake.txt'
     >>> lists = [fake]
-    >>> filename_set_dict = read_lists(lists, min_p_value=4)
+    >>> filename_set_dict = read_files(lists, p_value_bound=4)
     >>> list(filename_set_dict.keys())
     ['fake.txt']
     >>> list(filename_set_dict.values())
-    [{43}]
+    [{42}]
     '''
     filename_to_set = {}
-    for f in lists:
+    for f in files:
         df = dataframer.parse(f).data_frame
         p_value_col = pick_col(r'p.*value', df)
         if p_value_col:
-            selected_rows = df.loc[df[p_value_col] > min_p_value]
+            selected_rows = df.loc[df[p_value_col] < p_value_bound]
         else:
             # If we can't identify a p-value column, take the whole thing.
             selected_rows = df

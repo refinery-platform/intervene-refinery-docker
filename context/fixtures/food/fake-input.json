@@ -7,15 +7,15 @@
   ],
   "parameters": [
     {
-      "name": "p-value upper bound",
+      "name": "p-value bound",
       "value": 0.1
     },
     {
-      "name": "fold-change",
+      "name": "fold-change bound",
       "value": 2
     },
     {
-      "name": "increase",
+      "name": "fold-change increase",
       "value": true
     }
   ]

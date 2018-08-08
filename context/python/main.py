@@ -5,7 +5,7 @@ import os
 import pathlib
 from sets import Sets
 
-from parse import read_json, read_lists
+from parse import read_files, read_json
 
 
 def arg_parser():
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     if args.json:
         lists = read_json(args.json)
     elif args.lists:
-        lists = read_lists(args.lists)
+        lists = read_files(args.lists)
     else:
         raise Exception('argparse validation should have failed earlier')
     sets = Sets(lists)
