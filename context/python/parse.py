@@ -69,14 +69,26 @@ def read_files(files, p_value_bound=None,
     filename_to_set = {}
     for f in files:
         df = dataframer.parse(f).data_frame
+
         p_value_col = pick_col(r'p.*value', df)
         if p_value_col:
-            selected_rows = df.loc[df[p_value_col] < p_value_bound]
+            df_p_value_filtered = df.loc[df[p_value_col] < p_value_bound]
         else:
             # If we can't identify a p-value column, take the whole thing.
-            selected_rows = df
+            df_p_value_filtered = df
+
+        fold_change_col = pick_col(r'fold.*change', df)
+        if fold_change_col:
+            filter = (df[fold_change_col] > fold_change_bound) \
+                if fold_change_is_increase \
+                else (df[fold_change_col] < fold_change_bound)
+            df_fold_change_filtered = df_p_value_filtered.loc[filter]
+        else:
+            # If we can't identify a fold-change column, take the whole thing.
+            df_fold_change_filtered = df_p_value_filtered
+
         filename_to_set[os.path.basename(f.name)] = \
-            set(selected_rows.index.tolist())
+            set(df_fold_change_filtered.index.tolist())
     return filename_to_set
 
 
