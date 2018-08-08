@@ -5,7 +5,7 @@ echo 'environment:'
 env # To help with debugging: Did we get the variables we expected?
 echo
 
-python3 /usr/bin/parse.py \
+python3 /usr/bin/main.py \
     --json /tmp/input.json \
     --output /srv/shiny-server/sample-apps/intervene/data
 

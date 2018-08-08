@@ -22,8 +22,18 @@ source shared.sh
 
 
 start doctest
-python -m doctest context/python/sets.py -v
+python -m doctest context/python/*.py -v
 end doctest
+
+
+start format
+flake8 context || die "Run 'autopep8 --in-place -r context'"
+end format
+
+
+start isort
+isort --recursive context --check-only || die "Run 'isort --recursive context'"
+end isort
 
 
 start docker_build
@@ -36,7 +46,14 @@ start docker_run
 retry
 echo "docker is responsive"
 ACTUAL_TEXT=`curl http://localhost:8888/`
-grep 'Intervene - an interactive Shiny app for UpSet plots' <(echo "$ACTUAL_TEXT") || die 'No match'
+grep 'Intervene - an interactive Shiny app for UpSet plots' <(echo "$ACTUAL_TEXT") || die "No match: $ACTUAL_TEXT"
+
+BASE='docker exec intervene-container cat /srv/shiny-server/sample-apps/intervene/data'
+ACTUAL_COLUMNS=`$BASE/columns.txt`
+diff context/fixtures/food/output-columns.txt <(echo "$ACTUAL_COLUMNS") || die "Unexpected columns; Actual: $ACTUAL_COLUMNS"
+ACTUAL_MATRIX=`$BASE/ratio_matrix.txt`
+diff context/fixtures/food/output-matrix.txt <(echo "$ACTUAL_MATRIX") || die "Unexpected matrix; Actual: $ACTUAL_MATRIX"
+
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 echo "container cleaned up"

@@ -1,8 +1,8 @@
 {
   "file_relationships": [
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/4e450/context/fixtures/food/fruit.txt",
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/4e450/context/fixtures/food/green.txt",
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/4e450/context/fixtures/food/sweet.txt",
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/4e450/context/fixtures/food/vegetable.txt"
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.5-pre/context/fixtures/food/fruit.csv",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.5-pre/context/fixtures/food/green.tsv",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.5-pre/context/fixtures/food/sweet.txt",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.5-pre/context/fixtures/food/vegetable.txt"
   ]
 }
