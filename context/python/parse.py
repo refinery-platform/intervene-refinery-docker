@@ -1,7 +1,7 @@
 import json
 import os
 import re
-from tempfile import mkdtemp
+from io import BytesIO
 from urllib.parse import urlparse
 
 import requests
@@ -30,45 +30,97 @@ def get_input_json(possible_input_file):
     raise Exception('No input.json from any source')
 
 
-def read_json(input_json_path, min_p_value=0):
+def read_json(input_json_path):
     input_json = get_input_json(input_json_path)
     data = json.loads(input_json)
-    tmp_dir = mkdtemp()
-    downloads = []
+    streams = []
     for url in data['file_relationships']:
-        base = os.path.basename(urlparse(url).path)
-        full = os.path.join(tmp_dir, base)
-        with open(full, 'wb') as f:
-            f.write(requests.get(url).content)
-        downloads.append(open(full, 'rb'))
-    return read_lists(downloads, min_p_value=min_p_value)
+        bytes = requests.get(url).content
+        stream = BytesIO(bytes)
+        stream.name = os.path.basename(urlparse(url).path)
+        streams.append(stream)
+    for parameter in data['parameters']:
+        if parameter['name'] == 'p-value bound':
+            p_value_bound = parameter['value']
+        if parameter['name'] == 'fold-change bound':
+            fold_change_bound = parameter['value']
+        if parameter['name'] == 'fold-change increase':
+            fold_change_is_increase = parameter['value']
+    return read_files(streams, p_value_bound=p_value_bound,
+                      fold_change_bound=fold_change_bound,
+                      fold_change_is_increase=fold_change_is_increase)
 
 
-def read_lists(lists, min_p_value=0):
+def read_files(files, p_value_bound=None,
+               fold_change_bound=None, fold_change_is_increase=None):
     '''
     Reads and filters files and returns a filename -> set dict.
 
     >>> from io import BytesIO
-    >>> fake = BytesIO(b'id,a,p_value,z\\n42,1,2,3\\n43,4,5,6')
-    >>> fake.name = '/ignore/directories/fake.txt'
-    >>> lists = [fake]
-    >>> filename_set_dict = read_lists(lists, min_p_value=4)
-    >>> list(filename_set_dict.keys())
+    >>> file = BytesIO('\\n'.join([ \
+                'id,p_value,fold_change', \
+                'id00,0,0', \
+                'id11,1,1', \
+                'id22,2,2', \
+                'id02,0,2', \
+                'id20,2,0']).encode('utf-8'))
+    >>> file.name = '/ignore/directories/fake.txt'
+    >>> lists = [file]
+
+    # No filters:
+    >>> selected = read_files(lists)
+    >>> list(selected.keys())
     ['fake.txt']
-    >>> list(filename_set_dict.values())
-    [{43}]
+    >>> sorted(list(selected.values())[0])
+    ['id00', 'id02', 'id11', 'id20', 'id22']
+
+    # p-value:
+    >>> selected = read_files(lists, p_value_bound=1)
+    >>> sorted(list(selected.values())[0])
+    ['id00', 'id02']
+
+    # fold-change increase:
+    >>> selected = read_files(lists, fold_change_bound=1, \
+                    fold_change_is_increase=True)
+    >>> sorted(list(selected.values())[0])
+    ['id02', 'id22']
+
+    # fold-change decrease:
+    >>> selected = read_files(lists, fold_change_bound=1, \
+                    fold_change_is_increase=False)
+    >>> sorted(list(selected.values())[0])
+    ['id00', 'id20']
+
+    # p-value and fold-change increase:
+    >>> selected = read_files(lists, p_value_bound=1, fold_change_bound=1, \
+                    fold_change_is_increase=True)
+    >>> sorted(list(selected.values())[0])
+    ['id02']
+
     '''
     filename_to_set = {}
-    for f in lists:
+    for f in files:
         df = dataframer.parse(f).data_frame
+
         p_value_col = pick_col(r'p.*value', df)
-        if p_value_col:
-            selected_rows = df.loc[df[p_value_col] > min_p_value]
+        if p_value_col and p_value_bound is not None:
+            df_p_value_filtered = df.loc[df[p_value_col] < p_value_bound]
         else:
             # If we can't identify a p-value column, take the whole thing.
-            selected_rows = df
+            df_p_value_filtered = df
+
+        fold_change_col = pick_col(r'fold.*change', df)
+        if fold_change_col and fold_change_bound is not None:
+            filter = (df[fold_change_col] > fold_change_bound) \
+                if fold_change_is_increase \
+                else (df[fold_change_col] < fold_change_bound)
+            df_fold_change_filtered = df_p_value_filtered.loc[filter]
+        else:
+            # If we can't identify a fold-change column, take the whole thing.
+            df_fold_change_filtered = df_p_value_filtered
+
         filename_to_set[os.path.basename(f.name)] = \
-            set(selected_rows.index.tolist())
+            set(df_fold_change_filtered.index.tolist())
     return filename_to_set
 
 

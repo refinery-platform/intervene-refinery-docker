@@ -1,8 +1,22 @@
 {
   "file_relationships": [
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.5-pre/context/fixtures/food/fruit.csv",
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.5-pre/context/fixtures/food/green.tsv",
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.5-pre/context/fixtures/food/sweet.txt",
-    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.5-pre/context/fixtures/food/vegetable.txt"
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.6-pre/context/fixtures/food/fruit.csv",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.6-pre/context/fixtures/food/green.tsv",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.6-pre/context/fixtures/food/sweet.txt",
+    "https://raw.githubusercontent.com/refinery-platform/intervene-refinery-docker/v0.0.6-pre/context/fixtures/food/vegetable.txt"
+  ],
+  "parameters": [
+    {
+      "name": "p-value bound",
+      "value": 0.1
+    },
+    {
+      "name": "fold-change bound",
+      "value": 2
+    },
+    {
+      "name": "fold-change increase",
+      "value": true
+    }
   ]
 }
