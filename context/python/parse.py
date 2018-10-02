@@ -17,15 +17,15 @@ def get_input_json(possible_input_file):
     if os.path.isfile(possible_input_file):
         return open(possible_input_file, 'r').read(None)
 
-    json = os.environ.get('INPUT_JSON')
-    if json:
-        print('INPUT_JSON: ' + json[:40])
-        return json
-
     url = os.environ.get('INPUT_JSON_URL')
     if url:
         print('INPUT_JSON_URL: ' + url)
         return requests.get(url).text
+
+    json = os.environ.get('INPUT_JSON')
+    if json:
+        print('INPUT_JSON: ' + json[:40])
+        return json
 
     raise Exception('No input.json from any source')
 
